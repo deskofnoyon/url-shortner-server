@@ -11,13 +11,14 @@
 
 ## Technologies Used
 
-🎨 Frontend:
+🚀 Backend:
 
-- React.js
-- Vite.js
-- React Icons
-- React router dom
-- Tailwindcss
+- express.js
+- cors
+- ejs (template engine)
+- mongoose (mongodb databese adapter)
+- colors (terminal color command)
+- dotenv (environment variable)
 
 ## Contributing
 
