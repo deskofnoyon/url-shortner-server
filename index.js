@@ -5,7 +5,10 @@ const colors = require('colors');
 const mongoose = require('mongoose');
 
 // Database URL
+
 const dbURL =  `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster1.lpsfjtz.mongodb.net/?retryWrites=true&w=majority`; // mongodb atlas cloude db url
+
+const dbLocalURL = `mongodb://localhost:27017/${process.env.APP_NAME}`
 
 // Connect to the database asynchronously
 mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })

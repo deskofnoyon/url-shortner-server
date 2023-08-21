@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const authRoute = require('./routes/v1/auth.route');
+const shortURLRoute = require('./routes/v1/url.route');
 
 // middlewares
 app.use(express.json());
@@ -10,6 +11,7 @@ app.set('view engine', 'ejs')
 
 // actual routes
 app.use('/api/v1/auth', authRoute);
+app.use("/api/v1/url", shortURLRoute)
 
 
 // default routes   
@@ -22,7 +24,7 @@ app.get('/', (req, res) => {
         protocol: "HTTP",
         contentType: "application/json",
         allow: "GET, HEAD, OPTIONS",
-        url: req.protocol + '://' + req.get('host')+ req.path
+        url: req.protocol + '://' + req.get('host') + req.path
     })
 });
 
