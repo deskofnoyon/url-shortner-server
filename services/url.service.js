@@ -1,4 +1,5 @@
 const URL = require("../models/URL");
+const User = require("../models/User");
 
 // Function to generate a unique short code
 function generateShortCode() {
@@ -15,23 +16,36 @@ function generateShortCode() {
 }
 
 exports.generateShortUrl = async (urlInfo) => {
-	const longURL = urlInfo.longURL;
-	const existingURL = await URL.findOne({ longURL });
-	if (existingURL) {
-		return existingURL.shortURL;
+	try {
+		const longURL = urlInfo.longURL;
+		const existingURL = await URL.findOne({ longURL });
+		if (existingURL) {
+			return existingURL.shortURL;
+		}
+		const shortCode = await generateShortCode();
+		const shortURL = `https://short-url-shortner.web.app/${shortCode}`; // Adjust the domain accordingly
+		const result = await URL.create({
+			...urlInfo,
+			shortCode,
+			shortURL,
+		});
+		return result;
+	} catch (error) {
+		return error;
 	}
-	const shortCode = await generateShortCode();
-	const shortURL = `https://short-url-shortner.web.app/${shortCode}`; // Adjust the domain accordingly
-	const result = await URL.create({
-		...urlInfo,
-		shortCode,
-		shortURL,
-	});
-	return result;
 };
 
-exports.getURLService = async (urlId) => {
-	const url = await URL.findOne({ shortURLCode: urlId });
+exports.getUrlsByUserEmailService = async (email) => {
+	const user = await User.findOne({email})
+	if (!user) {
+		return false;
+	}
+	const userUrls = await URL.find({ user: user._id });
+	return userUrls;
+};
+
+exports.getURLByShortCodeService = async (shortCode) => {
+	const url = await URL.findOne({ shortCode });
 	if (!url) {
 		return false;
 	}

@@ -7,8 +7,8 @@ const userRoute = require('./routes/v1/user.route');
 // middlewares
 app.use(express.json());
 app.use(cors());
-app.set('view engine', 'ejs')
-
+app.set('view engine', 'ejs');
+app.use(express.static('public'))
 // actual routes
 app.use('/api/v1/user', userRoute);
 app.use("/api/v1/url", shortURLRoute)

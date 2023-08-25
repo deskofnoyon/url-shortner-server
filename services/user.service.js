@@ -1,11 +1,15 @@
 const User = require("../models/User");
 
 exports.createUserService = async (userInfo) => {
-	const user = await User.create(userInfo);
-	return user;
+	try {
+		const user = await User.create(userInfo);
+		return user;
+	} catch (error) {
+		return error;
+	}
 };
 
-exports.getUserByEmailService = async (email) => {
-	const user = await User.find({ email: email });
-	return user;
+exports.getUserService = async () => {
+	const users = await User.find({});
+	return users;
 };
