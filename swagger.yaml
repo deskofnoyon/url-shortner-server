@@ -1,0 +1,80 @@
+openapi: 3.0.0
+info:
+  title: URL Shortner API Documentation
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080 
+paths:
+  /api/v1/user:
+    get:
+      summary: Get user data
+      description: Retrieve user data.
+      responses:
+        '200':
+          description: Successful response
+        '404':
+          description: User not found
+  /api/v1/url:
+    post:
+      summary: Create a short URL
+      description: Create a short URL for a given URL.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  description: The original URL to shorten.
+              required:
+                - url
+      responses:
+        '201':
+          description: Short URL created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  shortUrl:
+                    type: string
+                    description: The generated short URL.
+        '400':
+          description: Bad request
+  /api/v1/url/email:
+  get:
+      summary: Get a list of short URLs
+      description: Retrieve a list of short URLs.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    originalUrl:
+                      type: string
+                      description: The original URL.
+                    shortUrl:
+                      type: string
+                      description: The short URL.
+        '404':
+          description: No short URLs found
+  '/':
+    get:
+      summary: Get the home page
+      description: Retrieve the home page.
+      responses:
+        '200':
+          description: Successful response
+  '*':
+    get:
+      summary: Handle 404 Not Found
+      description: Handle requests to undefined routes.
+      responses:
+        '404':
+          description: Not Found
