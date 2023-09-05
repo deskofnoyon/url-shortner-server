@@ -1,18 +1,67 @@
 openapi: 3.0.0
 info:
-  title: URL Shortner API Documentation
+  title: URL Shortener API Documentation
   version: 1.0.0
 servers:
-  - url: http://localhost:8080 
+  - url: http://localhost:8080
 paths:
   /api/v1/user:
+    post:
+      summary: Create a user
+      description: Create user record when new user is registered
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  description: user email
+                firstName:
+                  type: string
+                  description: user firstname
+              required:
+                - email firstname
+      responses:
+        "200":
+          description: Successful response
+          content:
+            "application/json":
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    description: user unique id
+                    example: 64e8503095a8dcee8b88baee
+                  email:
+                    type: string
+                    description: user email
+                    example: user@gmail.com
+                  firstName:
+                    type: string
+                    description: User first name
+                    example:  Jhon
+                  lastName:
+                    type: string
+                    description: User last name
+                    example:  Doe
+                  createdAt:
+                    type: string
+                    example: "2023-08-25T07:01:54.270+00:00"
+                  updatedAt:
+                    type: string
+                    example: "2023-08-25T07:01:54.270+00:00 "
+        "400":
+          description: Faild to create user
     get:
       summary: Get user data
       description: Retrieve user data.
       responses:
-        '200':
+        "200":
           description: Successful response
-        '404':
+        "404":
           description: User not found
   /api/v1/url:
     post:
@@ -30,7 +79,7 @@ paths:
               required:
                 - url
       responses:
-        '201':
+        "201":
           description: Short URL created successfully
           content:
             application/json:
@@ -40,14 +89,21 @@ paths:
                   shortUrl:
                     type: string
                     description: The generated short URL.
-        '400':
+        "400":
           description: Bad request
-  /api/v1/url/email:
-  get:
-      summary: Get a list of short URLs
-      description: Retrieve a list of short URLs.
+  /api/v1/url/user/{email}:
+    get:
+      summary: Get a list of short URLs by user email
+      description: Retrieve a list of short URLs by user email.
+      parameters:
+        - name: email
+          in: path
+          required: true
+          schema:
+            type: string
+          description: The user's email address.
       responses:
-        '200':
+        "200":
           description: Successful response
           content:
             application/json:
@@ -62,19 +118,19 @@ paths:
                     shortUrl:
                       type: string
                       description: The short URL.
-        '404':
+        "404":
           description: No short URLs found
-  '/':
+  "/":
     get:
       summary: Get the home page
       description: Retrieve the home page.
       responses:
-        '200':
+        "200":
           description: Successful response
-  '*':
+  "*":
     get:
       summary: Handle 404 Not Found
       description: Handle requests to undefined routes.
       responses:
-        '404':
+        "404":
           description: Not Found
