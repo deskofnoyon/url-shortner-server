@@ -12,7 +12,7 @@ const dbLocalURL = `mongodb://localhost:27017/${process.env.APP_NAME}`;
 
 // Connect to the database asynchronously
 mongoose
-	.connect(dbLocalURL, {
+	.connect(dbURL, {
 		// useNewUrlParser: true,
 		// useUnifiedTopology: true,
 		// serverSelectionTimeoutMS: 5000,
