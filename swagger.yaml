@@ -2,11 +2,34 @@ openapi: 3.0.0
 info:
   title: URL Shortener API Documentation
   version: 1.0.0
+  description: URL Shortener is a simple web application that converts long URLs into shorter, user-friendly versions. This project aims to make sharing links on social media and other platforms easier, especially where character count matters.
+  contact:
+    name: Noyon Rahman
+    email: codernoyon@gmail.com
+    url: https://noyonrahman.xyz
+    
 servers:
   - url: http://localhost:8080
+    description: Development server
+  - url: https://short-url-shortner.onrender.com
+    description: Production server
 paths:
+  /health:
+    get:
+      tags:
+        - "health"
+      summary: Application health status
+      description: Cheack the application health status
+      responses:
+        "200":
+          description: Successful
+        "500":
+          description: Server runtime error
+
   /api/v1/user:
     post:
+      tags:
+        - "user"
       summary: Create a user
       description: Create user record when new user is registered
       requestBody:
@@ -18,9 +41,15 @@ paths:
                 email:
                   type: string
                   description: user email
+                  example: user@example.com
                 firstName:
                   type: string
                   description: user firstname
+                  example: Jhon
+                lastName:
+                  type: string
+                  description: user lastname
+                  example: Doe
               required:
                 - email firstname
       responses:
@@ -42,11 +71,11 @@ paths:
                   firstName:
                     type: string
                     description: User first name
-                    example:  Jhon
+                    example: Jhon
                   lastName:
                     type: string
                     description: User last name
-                    example:  Doe
+                    example: Doe
                   createdAt:
                     type: string
                     example: "2023-08-25T07:01:54.270+00:00"
@@ -56,6 +85,8 @@ paths:
         "400":
           description: Faild to create user
     get:
+      tags:
+        - "user"
       summary: Get user data
       description: Retrieve user data.
       responses:
@@ -63,8 +94,10 @@ paths:
           description: Successful response
         "404":
           description: User not found
-  /api/v1/url:
+  /api/v1/url/shorten:
     post:
+      tags:
+        - "url"
       summary: Create a short URL
       description: Create a short URL for a given URL.
       requestBody:
@@ -73,11 +106,16 @@ paths:
             schema:
               type: object
               properties:
-                url:
+                longURL:
                   type: string
                   description: The original URL to shorten.
+                  example: https://google.com
+                user:
+                  type: string
+                  description: User id
+                  example: 64e8503095a8dcee8b88baee
               required:
-                - url
+                - longURL user
       responses:
         "201":
           description: Short URL created successfully
@@ -86,13 +124,33 @@ paths:
               schema:
                 type: object
                 properties:
-                  shortUrl:
+                  _id:
                     type: string
-                    description: The generated short URL.
+                    example: 64f81880de3d316cb72b93e8
+                  longURL:
+                    type: string
+                    example: https://google.com
+                  shortCode:
+                    type: string
+                    example: sLEweE
+                  shortURL:
+                    type: string
+                    example: https://short-url-shortner.web.app/sLEweE
+                  user:
+                    type: string
+                    example: 64e8503095a8dcee8b88baee
+                  createdAt:
+                    type: string
+                    example: "2023-09-06T06:13:20.406Z"
+                  updatedAt:
+                    type: string
+                    example: "2023-09-06T06:13:20.406Z"
         "400":
           description: Bad request
   /api/v1/url/user/{email}:
     get:
+      tags:
+        - "url"
       summary: Get a list of short URLs by user email
       description: Retrieve a list of short URLs by user email.
       parameters:
@@ -122,13 +180,17 @@ paths:
           description: No short URLs found
   "/":
     get:
+      tags:
+        - "open"
       summary: Get the home page
       description: Retrieve the home page.
       responses:
         "200":
           description: Successful response
-  "*":
+  "/*":
     get:
+      tags:
+        - "open"
       summary: Handle 404 Not Found
       description: Handle requests to undefined routes.
       responses:
